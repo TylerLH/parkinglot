@@ -13,7 +13,7 @@ To run, you'll need node/io.js installed on the host machine.
 
 # Development
 
-Follow the installation instructions above. Use `npm run dev` to run the development server, and `gulp watch` to watch & build the client app when files change.
+Follow the installation instructions above. Use `npm run dev` to run the development server (restarts on changes), and `gulp dev` to watch & build the client app when files change.
 
 ## Development Notes
 
