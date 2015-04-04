@@ -1,0 +1,29 @@
+.legend-container {
+  flex: 1;
+  display: flex;
+
+  .legend {
+    flex: 1;
+  }
+}
+
+.controls {
+  flex: 5;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .slider-container {
+    flex: 1;
+    display: flex;
+
+    .slider {
+      flex: 1;
+    }
+  }
+
+}
+
+.rickshaw_legend {
+  border-radius: 0;
+}
