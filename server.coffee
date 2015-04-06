@@ -27,7 +27,7 @@ app.get '/data', (req, res, next) ->
         !_.isFinite row['car.count'] || !_.isFinite row['weather']
 
       # Format JSON to include relevant fields
-      output = _.first output, 200
+      # output = _.first output, 200
       _.each output, (row) ->
         date = formatDate.parse(row.date).getTime()
         data[0].push {x: date, y: row['car.count']}
@@ -45,7 +45,7 @@ app.get '/parsed_data', (req, res, next) ->
     !_.isFinite row['car.count'] || !_.isFinite row['weather']
 
   # Format JSON to include relevant fields
-  output = _.first output, 200
+  # output = _.first output, 200
   _.each output, (row) ->
     date = formatDate.parse(row.date).getTime()
     carData.push {x: date, y: row['car.count']}

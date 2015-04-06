@@ -2663,6 +2663,7 @@ body {
   flex-direction: row;
   flex: 3;
   text-align: center;
+  padding: 20px;
 }
 
 .chart {
@@ -2676,6 +2677,8 @@ body {
 }
 
 .chart-bottom {
+  background-color: #f5f5f5;
+  border-top: 1px solid #dadada;
   display: flex;
   flex-direction: row;
   flex: 1;

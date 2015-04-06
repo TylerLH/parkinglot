@@ -37,9 +37,6 @@ Chart = React.createClass
       min: 'auto'
       height: graphEl.innerHeight
       width: graphEl.innerWidth
-      padding:
-        bottom: .05
-        top: .1
       series: [
         {
           name: 'Car Count'
@@ -85,6 +82,8 @@ Chart = React.createClass
 
     hoverDetail = new Rickshaw.Graph.HoverDetail
       graph: graph
+      xFormatter: (x) ->
+        moment(x).format 'dddd, MMMM Do YYYY'
 
     toggle = new Rickshaw.Graph.Behavior.Series.Toggle
       graph: graph
