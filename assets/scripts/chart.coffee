@@ -32,7 +32,7 @@ Chart = React.createClass
 
     graph = new Rickshaw.Graph
       element: graphEl
-      renderer: 'stack'
+      renderer: 'line'
       stroke: true
       min: 'auto'
       height: graphEl.innerHeight
