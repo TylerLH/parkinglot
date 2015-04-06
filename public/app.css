@@ -2662,10 +2662,23 @@ body {
   display: flex;
   flex-direction: column;
   flex: 3;
+  overflow: hidden;
 }
 
 .chart {
   flex: 1;
+}
+
+.y-axis {
+  width: 40px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.y-axis.first {
+  left: 0;
 }
 
 .chart-bottom {

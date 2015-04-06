@@ -3,8 +3,8 @@ require 'jquery-ui'
 React = require 'react/addons'
 d3 = require 'd3'
 Rickshaw = require 'rickshaw'
-require 'whatwg-fetch'
 moment = require 'moment'
+_ = require 'underscore'
 
 Chart = React.createClass
   displayName: 'Chart'
@@ -14,15 +14,45 @@ Chart = React.createClass
     legendEl = React.findDOMNode(@refs.legend)
     sliderContainerEl = React.findDOMNode(@refs.sliderContainer)
     sliderEl = React.findDOMNode(@refs.slider)
+    axis1El = React.findDOMNode(@refs.axis1)
+    axis2El = React.findDOMNode(@refs.axis2)
+
+    scales = []
+    palette = new Rickshaw.Color.Palette
+
+    # Determine the scales to use for each axis
+    for series, i in @props.data
+      min = _.min series, (point) -> point.y
+      max = _.max series, (point) -> point.y
+      if i is 0
+        scale = d3.scale.linear()
+      else
+        scale = d3.scale.pow()
+      scales.push scale.domain([min.y, max.y]).nice()
+
+    window.scales = scales
 
     graph = new Rickshaw.Graph
       element: graphEl
-      renderer: 'stack'
+      renderer: 'line'
       stroke: true
       min: 'auto'
       height: graphEl.innerHeight
       width: graphEl.innerWidth
-      series: @props.data
+      series: [
+        {
+          name: 'Car Count'
+          data: @props.data[0]
+          color: palette.color()
+          scale: scales[0]
+        }
+        {
+          name: 'Weather'
+          data: @props.data[1]
+          color: palette.color()
+          scale: scales[1]
+        }
+      ]
 
     graph.render()
 
@@ -32,12 +62,36 @@ Chart = React.createClass
         return moment(x).format('MM/DD/YYYY')
     xAxis.render()
 
+    yAxisLeft = new Rickshaw.Graph.Axis.Y.Scaled
+      graph: graph
+      orientation: 'left'
+      #tickFormat: Rickshaw.Fixtures.Number.formatKMBT
+      element: axis1El
+      scale: scales[0]
+    yAxisLeft.render()
+
+    yAxisRight = new Rickshaw.Graph.Axis.Y.Scaled
+      graph: graph
+      orientation: 'right'
+      #tickFormat: Rickshaw.Fixtures.Number.formatKMBT
+      element: axis2El
+      scale: scales[1]
+    yAxisRight.render()
+
     legend = new Rickshaw.Graph.Legend
       graph: graph
       element: legendEl
 
     hoverDetail = new Rickshaw.Graph.HoverDetail
       graph: graph
+
+    toggle = new Rickshaw.Graph.Behavior.Series.Toggle
+      graph: graph
+      legend: legend
+
+    highlighter = new Rickshaw.Graph.Behavior.Series.Highlight
+      graph: graph
+      legend: legend
 
     slider = new Rickshaw.Graph.RangeSlider.Preview
       graph: graph
@@ -52,7 +106,9 @@ Chart = React.createClass
   render: ->
     <div className="chart-container">
       <div className="chart-top">
+        <div className="y-axis first" ref="axis1"></div>
         <div className="chart" ref="chart"></div>
+        <div className="y-axis" ref="axis2"></div>
       </div>
       <div className="chart-bottom">
         <div className="legend-container">
