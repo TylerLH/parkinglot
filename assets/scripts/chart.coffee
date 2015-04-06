@@ -30,15 +30,16 @@ Chart = React.createClass
         scale = d3.scale.pow()
       scales.push scale.domain([min.y, max.y]).nice()
 
-    window.scales = scales
-
     graph = new Rickshaw.Graph
       element: graphEl
-      renderer: 'line'
+      renderer: 'stack'
       stroke: true
       min: 'auto'
       height: graphEl.innerHeight
       width: graphEl.innerWidth
+      padding:
+        bottom: .05
+        top: .1
       series: [
         {
           name: 'Car Count'

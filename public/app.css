@@ -2660,25 +2660,19 @@ body {
 
 .chart-top {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex: 3;
-  overflow: hidden;
+  text-align: center;
 }
 
 .chart {
   flex: 1;
+  max-width: 95%;
 }
 
 .y-axis {
-  width: 40px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-}
-
-.y-axis.first {
-  left: 0;
+  flex: 1;
+  max-width: 40px;
 }
 
 .chart-bottom {
