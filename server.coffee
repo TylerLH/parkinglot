@@ -27,7 +27,7 @@ app.get '/data', (req, res, next) ->
         !_.isFinite row['car.count'] || !_.isFinite row['weather']
 
       # Format JSON to include relevant fields
-      output = _.first output, 200
+      output = _.sample output, 200
       _.each output, (row) ->
         date = formatDate.parse(row.date).getTime()
         data[0].push {x: date, y: row['car.count']}
@@ -35,27 +35,6 @@ app.get '/data', (req, res, next) ->
 
       # Send formatted data
       res.json data
-
-app.get '/parsed_data', (req, res, next) ->
-  carData = []
-  weatherData = []
-  json = require "#{__dirname}/data/data.json"
-  # Remove rows with missing data or useless values
-  output = _.reject json, (row) ->
-    !_.isFinite row['car.count'] || !_.isFinite row['weather']
-
-  # Format JSON to include relevant fields
-  output = _.first output, 200
-  _.each output, (row) ->
-    date = formatDate.parse(row.date).getTime()
-    carData.push {x: date, y: row['car.count']}
-    weatherData.push {x: date, y: row['weather']}
-
-  # Send formatted data ready to display in graph
-  res.json [
-    { name: 'Car Count', data: carData, color: '#2ecc71' }
-    { name: 'Weather', data: weatherData, color: '#e67e22' }
-  ]
 
 # Error handling middleware
 app.use (err, req, res, next) ->
