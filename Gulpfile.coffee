@@ -24,13 +24,28 @@ gulp.task 'data', (done) ->
         $.util.log err.message if err?
         done()
 
+# Compile stylesheets
 gulp.task 'styles', ->
   gulp.src paths.STYLES_ENTRY
   .pipe $.sass
     includePaths: ['./node_modules']
     onError: (err) ->
       $.util.log 'Styles Error', err.message
+  .pipe $.autoprefixer()
   .pipe $.importCss()
+  .pipe gulp.dest paths.DIST
+
+gulp.task 'scripts', ->
+  browserify(
+    entries: [paths.SCRIPTS_ENTRY]
+    extensions: ['.coffee', '.cjsx']
+    transform: ['coffee-reactify']
+    debug: true
+    cache: {}
+    packageCache: {}
+    fullPaths: true
+  ).bundle()
+  .pipe source paths.SCRIPTS_OUTPUT
   .pipe gulp.dest paths.DIST
 
 # Watch files for changes and rebuild
@@ -59,3 +74,5 @@ gulp.task 'watch', ->
   .pipe gulp.dest paths.DIST
 
 gulp.task 'dev', ['styles', 'watch']
+
+gulp.task 'default', ['scripts', 'styles']
